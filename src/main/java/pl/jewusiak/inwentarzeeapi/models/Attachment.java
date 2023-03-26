@@ -1,25 +1,30 @@
 package pl.jewusiak.inwentarzeeapi.models;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Attachment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private UUID id;
+
     private String label;
-    private String path;
-    
+
+    private String originalFileName;
+
+    @Transient
+    private String downloadUrl;
+
     @Enumerated(EnumType.ORDINAL)
     private ViewableAttachmentType viewableAttachmentType;
 
     @ManyToOne
-    @JoinColumn(name = "equipment_id", nullable = false)
+    @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
 }
