@@ -5,7 +5,7 @@ import pl.jewusiak.inwentarzeeapi.models.Equipment;
 import pl.jewusiak.inwentarzeeapi.services.EquipmentService;
 
 @RestController
-@RequestMapping("equipment")
+@RequestMapping(value = "equipment")
 public class EquipmentController {
 
 
@@ -16,13 +16,28 @@ public class EquipmentController {
     }
 
     @GetMapping("")
-    public @ResponseBody Iterable<Equipment> getAllEquipment() {
+    public Iterable<Equipment> getAllEquipment() {
         return equipmentService.getAllEquipment();
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Equipment getEquipmentById(@PathVariable long id) {
+    public Equipment getEquipmentById(@PathVariable long id) {
         return equipmentService.getEquipmentById(id);
+    }
+
+    @PostMapping(value = "")
+    public Equipment createEquipment(@RequestBody Equipment equipment) {
+        return equipmentService.createEquipment(equipment);
+    }
+
+    @PutMapping("/{id}")
+    public Equipment updateEquipment(@RequestBody String json, @PathVariable long id) {
+        return equipmentService.updateEquipment(json, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEquipment(@PathVariable long id) {
+        equipmentService.deleteEquipmentById(id);
     }
 
 }

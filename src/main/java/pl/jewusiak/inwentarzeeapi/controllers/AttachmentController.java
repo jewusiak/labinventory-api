@@ -26,8 +26,8 @@ public class AttachmentController {
     }
 
     @PostMapping("")
-    public Attachment createAttachment(@RequestParam("file") MultipartFile file) {
-        return attachmentService.createAttachment(file, "New file");
+    public Attachment createAttachment(@RequestParam("file") MultipartFile file, @RequestParam(value = "label", required = false, defaultValue = "") String label) {
+        return attachmentService.createAttachment(file, label);
     }
 
     @GetMapping("/{id}")
@@ -40,5 +40,20 @@ public class AttachmentController {
         Attachment attachment = attachmentService.getAttachmentById(id);
         Resource resource = attachmentService.downloadAttachment(id);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getOriginalFileName() + "\"").body(resource);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAttachmentById(@PathVariable UUID id) {
+        attachmentService.deleteAttachmentById(id);
+    }
+
+    @PostMapping("/{attachment_id}/assign_equipment/{equipment_id}")
+    public Attachment assignEquipment(@PathVariable UUID attachment_id, @PathVariable long equipment_id) {
+        return attachmentService.assignEquipment(attachment_id, equipment_id);
+    }
+
+    @PostMapping("/{attachment_id}/assign_event/{event_id}")
+    public Attachment assignEvent(@PathVariable UUID attachment_id, @PathVariable long event_id) {
+        return attachmentService.assignEvent(attachment_id, event_id);
     }
 }

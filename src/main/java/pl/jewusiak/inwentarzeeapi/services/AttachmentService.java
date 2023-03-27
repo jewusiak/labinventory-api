@@ -1,6 +1,5 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,12 +15,15 @@ public class AttachmentService {
 
     private final FileStorageService fileStorageService;
     private final AttachmentRepository attachmentRepository;
-    @Value("${inwentarz-ee.baseAddress}")
-    private String baseUrl;
+    private final EquipmentService equipmentService;
+    private final EventService eventService;
 
-    public AttachmentService(AttachmentRepository attachmentRepository, FileStorageService fileStorageService) {
+
+    public AttachmentService(AttachmentRepository attachmentRepository, FileStorageService fileStorageService, EquipmentService equipmentService, EventService eventService) {
         this.attachmentRepository = attachmentRepository;
         this.fileStorageService = fileStorageService;
+        this.equipmentService = equipmentService;
+        this.eventService = eventService;
     }
 
     public Iterable<Attachment> getAllAttachments() {
@@ -29,9 +31,7 @@ public class AttachmentService {
     }
 
     public Attachment getAttachmentById(UUID id) {
-        Attachment attachment = attachmentRepository.findById(id).orElseThrow(() -> new NotFoundException("attachment"));
-        attachment.setDownloadUrl(baseUrl + "/attachment/download/" + attachment.getId());
-        return attachment;
+        return attachmentRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public void deleteAttachmentById(UUID id) {
@@ -57,4 +57,15 @@ public class AttachmentService {
         return fileStorageService.getFile(attachmentId.toString());
     }
 
+    public Attachment assignEquipment(UUID attachmentId, long equipmentId) {
+        Attachment attachment = getAttachmentById(attachmentId);
+        attachment.setEquipment(equipmentService.getEquipmentById(equipmentId));
+        return attachmentRepository.save(attachment);
+    }
+
+    public Attachment assignEvent(UUID attachmentId, long eventId) {
+        Attachment attachment = getAttachmentById(attachmentId);
+        attachment.setEvent(eventService.getEventById(eventId));
+        return attachmentRepository.save(attachment);
+    }
 }
