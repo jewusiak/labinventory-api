@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,6 +17,10 @@ public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID qrCodeUuid;
     private String name;
     private String description;
     private LocalDateTime next_calibration;
@@ -26,7 +31,4 @@ public class Equipment {
     @OneToMany(mappedBy = "equipment", cascade = {CascadeType.REMOVE})
     private List<Event> events;
 
-    public Equipment(long id) {
-        this.id = id;
-    }
 }

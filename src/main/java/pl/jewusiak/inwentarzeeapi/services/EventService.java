@@ -22,7 +22,7 @@ public class EventService {
     }
 
     public Event getEventById(long id) {
-        return eventRepository.findById(id).orElseThrow(NotFoundException::new);
+        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("event"));
     }
 
     public void deleteEventById(long id) {

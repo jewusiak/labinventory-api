@@ -1,8 +1,13 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jewusiak.inwentarzeeapi.models.Equipment;
 import pl.jewusiak.inwentarzeeapi.services.EquipmentService;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "equipment")
@@ -38,6 +43,17 @@ public class EquipmentController {
     @DeleteMapping("/{id}")
     public void deleteEquipment(@PathVariable long id) {
         equipmentService.deleteEquipmentById(id);
+    }
+
+    @GetMapping("/genqrcode/{id}")
+    public ResponseEntity<Resource> getQrCode(@PathVariable long id) throws Exception {
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"qr.png\"")
+                .body(equipmentService.generateQrCode(id));
+    }
+
+    @GetMapping("/getbyqrcode/{uuid}")
+    public Equipment getByQrCode(@PathVariable UUID uuid) {
+        return equipmentService.getEquipmentByQrCodeUUID(uuid);
     }
 
 }

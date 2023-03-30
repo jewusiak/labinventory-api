@@ -31,7 +31,7 @@ public class AttachmentService {
     }
 
     public Attachment getAttachmentById(UUID id) {
-        return attachmentRepository.findById(id).orElseThrow(NotFoundException::new);
+        return attachmentRepository.findById(id).orElseThrow(() -> new NotFoundException("attachment"));
     }
 
     public void deleteAttachmentById(UUID id) {
