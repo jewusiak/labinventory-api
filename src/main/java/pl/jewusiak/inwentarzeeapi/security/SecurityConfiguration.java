@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.jewusiak.inwentarzeeapi.models.User;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeHttpRequests().requestMatchers("/auth/**", "/error").permitAll().anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authenticationProvider(authenticationProvider).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.csrf().disable().authorizeHttpRequests().requestMatchers("/auth/**", "/error", "/attachment/download/*", "/attachment/getbyid/*",
+                        "/equipment/getall", "/equipment/getqrcode/*", "/equipment/getbyid/*").permitAll()
+                .requestMatchers("/users/**").hasAnyAuthority(User.UserRole.ADMIN.name())
+                .anyRequest().authenticated()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

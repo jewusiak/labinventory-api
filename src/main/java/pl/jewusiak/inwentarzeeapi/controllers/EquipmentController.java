@@ -20,12 +20,12 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
-    @GetMapping("")
+    @GetMapping("/getall")
     public Iterable<Equipment> getAllEquipment() {
         return equipmentService.getAllEquipment();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getbyid/{id}")
     public Equipment getEquipmentById(@PathVariable long id) {
         return equipmentService.getEquipmentById(id);
     }
@@ -47,8 +47,8 @@ public class EquipmentController {
 
     @GetMapping("/genqrcode/{id}")
     public ResponseEntity<Resource> getQrCode(@PathVariable long id) throws Exception {
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"qr.png\"")
-                .body(equipmentService.generateQrCode(id));
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"qr.png\"").header(HttpHeaders.CONTENT_TYPE, "image/png")
+                .body(equipmentService.generateQrCode(getEquipmentById(id)));
     }
 
     @GetMapping("/getbyqrcode/{uuid}")

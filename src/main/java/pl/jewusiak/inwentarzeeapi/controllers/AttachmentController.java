@@ -30,7 +30,7 @@ public class AttachmentController {
         return attachmentService.createAttachment(file, label);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getbyid/{id}")
     public Attachment getAttachmentById(@PathVariable UUID id) {
         return attachmentService.getAttachmentById(id);
     }
