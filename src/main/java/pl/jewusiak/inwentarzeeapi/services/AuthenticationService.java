@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationRequest;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationResponse;
@@ -31,7 +32,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userService.getUserByEmail(request.getEmail());
+        var user = userService.findUserByEmail(request.getEmail()).orElseThrow(InvalidCredentialsException::new);
+
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

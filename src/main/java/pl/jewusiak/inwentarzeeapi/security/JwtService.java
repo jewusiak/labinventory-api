@@ -1,15 +1,12 @@
 package pl.jewusiak.inwentarzeeapi.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Date;
@@ -49,11 +46,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        try {
-            return Jwts.parserBuilder().setSigningKey(getJwtSecretKey()).build().parseClaimsJws(token).getBody();
-        } catch (JwtException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
+        return Jwts.parserBuilder().setSigningKey(getJwtSecretKey()).build().parseClaimsJws(token).getBody();
     }
 
     private Key getJwtSecretKey() {

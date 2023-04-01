@@ -2,6 +2,7 @@ package pl.jewusiak.inwentarzeeapi.controllers;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,8 +39,16 @@ public class AttachmentController {
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadAttachmentById(@PathVariable UUID id) {
         Attachment attachment = attachmentService.getAttachmentById(id);
-        Resource resource = attachmentService.downloadAttachment(id);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getOriginalFileName() + "\"").body(resource);
+        Resource resource = attachmentService.getAttachmentAsResource(id);
+        var responseEntity = ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getOriginalFileName() + "\"");
+        responseEntity.contentType(switch (attachment.getViewableAttachmentType()) {
+            case PDF -> MediaType.APPLICATION_PDF;
+            case PNG -> MediaType.IMAGE_PNG;
+            case JPEG -> MediaType.IMAGE_JPEG;
+            default -> MediaType.APPLICATION_OCTET_STREAM;
+
+        });
+        return responseEntity.body(resource);
     }
 
     @DeleteMapping("/{id}")
