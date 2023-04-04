@@ -62,8 +62,8 @@ public class EquipmentService {
     }
 
     public Resource generateQrCode(Equipment equipment) throws Exception {
-        String name=equipment.getName()==null ? "BRAK NAZWY" : equipment.getName();
-        String id=equipment.getId()+"";
+        String name = equipment.getName() == null ? "BRAK NAZWY" : equipment.getName();
+        String id = String.valueOf(equipment.getId());
 
         BitMatrix matrix = new QRCodeWriter().encode(equipment.getQrCodeUuid().toString(), BarcodeFormat.QR_CODE, 200, 200);
         var qrCode = MatrixToImageWriter.toBufferedImage(matrix);

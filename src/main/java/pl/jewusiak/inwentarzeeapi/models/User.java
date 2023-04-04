@@ -2,7 +2,6 @@ package pl.jewusiak.inwentarzeeapi.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +20,6 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private long id;
     private String displayName;
 
@@ -30,7 +28,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    public enum UserRole {USER, ADMIN};
+    public enum UserRole {USER, ADMIN}
 
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false, columnDefinition = "smallint default 0")
@@ -69,7 +67,7 @@ public class User implements UserDetails {
         return isAccountEnabled;
     }
 
-    public UserDto toDto(){
+    public UserDto toDto() {
         return UserDto.builder().id(id).displayName(displayName).email(email).role(role.name()).isAccountEnabled(isAccountEnabled).build();
     }
 }

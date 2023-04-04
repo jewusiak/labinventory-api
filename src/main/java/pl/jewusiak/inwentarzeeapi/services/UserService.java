@@ -1,6 +1,8 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.User;
@@ -27,6 +29,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        if(userRepository.existsByEmail(user.getEmail())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email exists in the database");
         user.setRole(User.UserRole.USER);
         user.setAccountEnabled(true);
         return userRepository.save(user);

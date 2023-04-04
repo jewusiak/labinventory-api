@@ -1,11 +1,12 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.models.dtos.UserDto;
 import pl.jewusiak.inwentarzeeapi.services.UserService;
 
