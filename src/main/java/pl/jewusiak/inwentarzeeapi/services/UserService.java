@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        if(userRepository.existsByEmail(user.getEmail())) throw new DuplicateEmailExistsInDatabase();
+        if (userRepository.existsByEmail(user.getEmail())) throw new DuplicateEmailExistsInDatabase();
         user.setRole(User.UserRole.USER);
         user.setAccountEnabled(true);
         return userRepository.save(user);
@@ -38,6 +38,10 @@ public class UserService {
         var user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("user by id"));
         user.setAccountEnabled(setEnabled);
         return userRepository.save(user);
+    }
+
+    public void deleteUser(long id) {
+        userRepository.delete(userRepository.findById(id).orElseThrow(() -> new NotFoundException("user by id")));
     }
 
 }

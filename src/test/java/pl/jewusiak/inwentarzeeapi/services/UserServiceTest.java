@@ -96,4 +96,22 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.changeUserActivationStatus(exampleUser.getId(), true)).isInstanceOf(NotFoundException.class);
     }
 
+    @Test
+    void deleteUserById_exists(){
+        when(userRepository.findById(exampleUser.getId())).thenReturn(Optional.ofNullable(exampleUser));
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        userService.deleteUser(exampleUser.getId());
+        verify(userRepository).delete(captor.capture());
+
+        assertThat(captor.getValue()).isEqualTo(exampleUser);
+    }
+
+    @Test
+    void deleteUserById_nonExisting(){
+        when(userRepository.findById(exampleUser.getId())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(()->userService.deleteUser(exampleUser.getId())).isInstanceOf(NotFoundException.class);
+    }
 }
