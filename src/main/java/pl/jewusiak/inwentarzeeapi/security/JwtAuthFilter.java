@@ -27,6 +27,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String jwt = header.substring(7);
+            if (jwtService.isTokenExpired(jwt)){
+                response.sendError(403, "Token is expired.");
+                return;
+            }
             String email = jwtService.extractEmail(jwt);
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {

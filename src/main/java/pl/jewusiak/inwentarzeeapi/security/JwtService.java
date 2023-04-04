@@ -1,6 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -24,7 +25,11 @@ public class JwtService {
     }
 
     public boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        try {
+            return extractClaim(token, Claims::getExpiration).before(new Date());
+        }catch (ExpiredJwtException e){
+            return true;
+        }
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
