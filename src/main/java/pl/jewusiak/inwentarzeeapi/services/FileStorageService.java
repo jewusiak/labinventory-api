@@ -1,6 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -10,10 +11,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.UUID;
 
 @Service
 public class FileStorageService {
+    @Getter
     private final String rootPath = "uploads";
 
     @PostConstruct
@@ -28,7 +31,7 @@ public class FileStorageService {
     public UUID saveFile(MultipartFile file) {
         UUID uuid = UUID.randomUUID();
         try {
-            Files.write(Path.of(rootPath + "/" + uuid), file.getBytes());
+            Files.write(Path.of(rootPath + "/" + uuid), file.getBytes(), StandardOpenOption.CREATE_NEW);
         } catch (IOException e) {
             throw new RuntimeException("File already exists! " + rootPath + "/" + uuid);
         }
