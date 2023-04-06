@@ -48,4 +48,12 @@ public class FileStorageService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+
+    public void removeFile(String uuid) {
+        try {
+            Files.delete(Path.of(rootPath).resolve(uuid));
+        } catch (IOException e) {
+            throw new RuntimeException("Error removing: " + rootPath + "/" + uuid);
+        }
+    }
 }

@@ -18,11 +18,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping("/{id}/{isenabled}")
-    public UserDto changeUserActivationStatus(@PathVariable long id, @PathVariable int isenabled) {
-        if (isenabled != 0 && isenabled != 1)
+    @PutMapping("/{id}/{setEnabled}")
+    public UserDto changeUserActivationStatus(@PathVariable long id, @PathVariable int setEnabled) {
+        if (setEnabled != 0 && setEnabled != 1)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Endpoint use: /users/{user id}/{0 or 1}. 0=false, 1=true.");
-        return userService.changeUserActivationStatus(id, isenabled == 1).toDto();
+        return userService.changeUserActivationStatus(id, setEnabled == 1).toDto();
     }
 
     @DeleteMapping("/{id}")

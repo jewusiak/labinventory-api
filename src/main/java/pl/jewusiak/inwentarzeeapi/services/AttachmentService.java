@@ -40,7 +40,11 @@ public class AttachmentService {
     }
 
     public void deleteAttachmentById(UUID id) {
-        attachmentRepository.delete(getAttachmentById(id));
+        Attachment attachment = getAttachmentById(id);
+        fileStorageService.removeFile(attachment.getId().toString());
+
+        attachmentRepository.delete(attachment);
+
     }
 
     public Attachment createAttachment(MultipartFile file, String label) {
