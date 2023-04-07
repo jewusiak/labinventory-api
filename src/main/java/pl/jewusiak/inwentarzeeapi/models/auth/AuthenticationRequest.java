@@ -13,5 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationRequest {
     private String email;
     private String password;
+    private Integer jwtexpirytime;
+
 
 }

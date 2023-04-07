@@ -28,7 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String jwt = header.substring(7);
             if (jwtService.isTokenExpired(jwt)){
-                response.sendError(403, "Token is expired.");
+                response.sendError(401, "Token is expired.");
                 return;
             }
             String email = jwtService.extractEmail(jwt);
@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService.findUserByEmail(email).orElse(null);
 
                 if (userDetails == null) {
-                    response.sendError(403);
+                    response.sendError(401, "User not found.");
                     return;
                 }
 

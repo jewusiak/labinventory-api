@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,12 +38,12 @@ public class JwtService {
         return email.equals(userDetails.getUsername()) && !isTokenExpired(token) && userDetails.isEnabled();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails, Duration duration) {
+        return generateToken(new HashMap<>(), userDetails, duration);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + 86400000 /*1 day*/)).signWith(getJwtSecretKey(), SignatureAlgorithm.HS256).compact();
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Duration duration) {
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + duration.toMillis())).signWith(getJwtSecretKey(), SignatureAlgorithm.HS256).compact();
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
