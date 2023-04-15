@@ -30,8 +30,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false, columnDefinition = "smallint default 0")
     private UserRole role;
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isAccountEnabled;
+    @Column(nullable = false, columnDefinition = "boolean default false", name = "is_account_enabled")
+    private Boolean isAccountEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

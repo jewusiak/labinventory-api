@@ -1,11 +1,14 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.exceptions.DuplicateEmailExistsInDatabase;
 import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.repositories.UserRepository;
+import pl.jewusiak.inwentarzeeapi.security.JwtService;
 
 import java.util.Optional;
 
@@ -13,9 +16,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public Optional<User> findUserByEmail(String email) {
@@ -33,7 +38,7 @@ public class UserService {
 
     public User changeUserActivationStatus(long id, boolean setEnabled) {
         var user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("user by id"));
-        user.setAccountEnabled(setEnabled);
+        user.setIsAccountEnabled(setEnabled);
         return userRepository.save(user);
     }
 
@@ -41,4 +46,12 @@ public class UserService {
         userRepository.delete(userRepository.findById(id).orElseThrow(() -> new NotFoundException("user by id")));
     }
 
+    public User getUserByToken(String token) {
+        if (token == null || !token.startsWith("Bearer "))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        token = token.substring(7);
+        if (jwtService.isTokenExpired(token))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        return getUserByEmail(jwtService.extractEmail(token));
+    }
 }

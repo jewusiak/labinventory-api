@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/auth/**", "/error", "/attachment/download/*", "/attachment/getbyid/*",
                         "/equipment/getall", "/equipment/getbyqrcode/*", "/equipment/getbyid/*")
                 .permitAll()
-                .requestMatchers("/users/**").hasAnyAuthority(User.UserRole.ADMIN.name())
+                .requestMatchers("/users/admin/**").hasAnyAuthority(User.UserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authenticationProvider(authenticationProvider)

@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,5 +13,10 @@ public class UserDto {
     private String displayName;
     private String email;
     private String role;
-    private boolean isAccountEnabled;
+    private Boolean isAccountEnabled;
+
+    @JsonProperty("isAccountEnabled")
+    public boolean isAccountEnabled() {
+        return isAccountEnabled;
+    }
 }

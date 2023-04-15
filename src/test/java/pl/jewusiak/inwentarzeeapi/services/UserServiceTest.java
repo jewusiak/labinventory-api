@@ -11,6 +11,7 @@ import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.repositories.UserRepository;
+import pl.jewusiak.inwentarzeeapi.security.JwtService;
 
 import java.util.Optional;
 
@@ -26,11 +27,12 @@ class UserServiceTest {
     private static User exampleUser = User.builder().email("john.doe@example.com").displayName("John Doe").password("pass").id(1L).build();
     @Mock
     private UserRepository userRepository;
+
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, new JwtService());
     }
 
     @Test
@@ -78,7 +80,7 @@ class UserServiceTest {
 
     @Test
     void changeUserActivationStatus_onSuccess() {
-        exampleUser.setAccountEnabled(false);
+        exampleUser.setIsAccountEnabled(false);
         when(userRepository.findById(exampleUser.getId())).thenReturn(Optional.ofNullable(exampleUser));
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);

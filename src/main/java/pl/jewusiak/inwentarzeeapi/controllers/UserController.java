@@ -1,7 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.models.dtos.UserDto;
@@ -10,7 +9,6 @@ import pl.jewusiak.inwentarzeeapi.services.UserService;
 
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 
     private final UserService userService;
@@ -21,7 +19,12 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @PutMapping("/{id}/{setEnabled}")
+    @GetMapping("/myprofile")
+    public UserDto getOwnProfile(@RequestHeader("Authorization") String bearerToken) {
+        return userMapper.mapToDto(userService.getUserByToken(bearerToken));
+    }
+
+    @PutMapping("/admin/{id}/{setEnabled}")
     public UserDto changeUserActivationStatus(@PathVariable Long id, @PathVariable int setEnabled) {
         if (setEnabled != 0 && setEnabled != 1)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -29,7 +32,7 @@ public class UserController {
         return userMapper.mapToDto(userService.changeUserActivationStatus(id, setEnabled == 1));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
