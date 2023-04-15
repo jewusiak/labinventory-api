@@ -1,22 +1,22 @@
 package pl.jewusiak.inwentarzeeapi.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,9 +26,9 @@ public class Equipment {
     private LocalDateTime next_calibration;
 
     @OneToMany(mappedBy = "equipment", cascade = {CascadeType.REMOVE})
-    private List<Attachment> attachments;
+    private Collection<Attachment> attachments;
 
     @OneToMany(mappedBy = "equipment", cascade = {CascadeType.REMOVE})
-    private List<Event> events;
+    private Collection<Event> events;
 
 }

@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    private static User exampleUser = User.builder().email("john.doe@example.com").displayName("John Doe").password("pass").id(1).build();
+    private static User exampleUser = User.builder().email("john.doe@example.com").displayName("John Doe").password("pass").id(1L).build();
     @Mock
     private UserRepository userRepository;
     private UserService userService;

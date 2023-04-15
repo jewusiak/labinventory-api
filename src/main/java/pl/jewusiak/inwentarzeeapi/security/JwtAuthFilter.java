@@ -27,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String jwt = header.substring(7);
-            if (jwtService.isTokenExpired(jwt)){
+            if (jwtService.isTokenExpired(jwt)) {
                 response.sendError(401, "Token is expired.");
                 return;
             }
@@ -42,12 +42,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                            null,
+                            userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-
 
         }
 

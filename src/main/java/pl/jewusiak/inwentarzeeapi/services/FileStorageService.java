@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
     @Getter
-    private final String rootPath = "uploads";
+    private final String rootPath = "api-data/uploads";
 
     @PostConstruct
     public void initialize() {

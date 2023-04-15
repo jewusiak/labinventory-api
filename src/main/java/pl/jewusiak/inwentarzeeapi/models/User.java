@@ -5,14 +5,14 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.jewusiak.inwentarzeeapi.models.dtos.UserDto;
 
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,20 +20,16 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String displayName;
 
     @Column(unique = true)
     private String email;
 
     private String password;
-
-    public enum UserRole {USER, ADMIN}
-
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false, columnDefinition = "smallint default 0")
     private UserRole role;
-
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isAccountEnabled;
 
@@ -67,7 +63,6 @@ public class User implements UserDetails {
         return isAccountEnabled;
     }
 
-    public UserDto toDto() {
-        return UserDto.builder().id(id).displayName(displayName).email(email).role(role.name()).isAccountEnabled(isAccountEnabled).build();
-    }
+    public enum UserRole {USER, ADMIN}
+
 }

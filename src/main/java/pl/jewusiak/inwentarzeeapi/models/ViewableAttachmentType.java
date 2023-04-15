@@ -1,6 +1,5 @@
 package pl.jewusiak.inwentarzeeapi.models;
 
-
 public enum ViewableAttachmentType {
     NV, PDF, JPEG, PNG;
 

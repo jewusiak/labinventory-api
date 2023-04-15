@@ -15,7 +15,6 @@ import pl.jewusiak.inwentarzeeapi.services.AuthenticationService;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")

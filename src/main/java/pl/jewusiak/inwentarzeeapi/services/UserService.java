@@ -22,15 +22,12 @@ public class UserService {
         return userRepository.findUserByEmail(email);
     }
 
-
     public User getUserByEmail(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(InvalidCredentialsException::new);
     }
 
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) throw new DuplicateEmailExistsInDatabase();
-        user.setRole(User.UserRole.USER);
-        user.setAccountEnabled(true);
         return userRepository.save(user);
     }
 

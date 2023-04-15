@@ -1,37 +1,38 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.Equipment;
+import pl.jewusiak.inwentarzeeapi.models.dtos.EquipmentDto;
+import pl.jewusiak.inwentarzeeapi.models.mappers.EquipmentMapper;
 import pl.jewusiak.inwentarzeeapi.repositories.EquipmentRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
 public class EquipmentService {
 
-
     private final EquipmentRepository equipmentRepository;
 
-    public EquipmentService(EquipmentRepository equipmentRepository) {
+    private final EquipmentMapper equipmentMapper;
+
+    public EquipmentService(EquipmentRepository equipmentRepository, EquipmentMapper equipmentMapper) {
         this.equipmentRepository = equipmentRepository;
+        this.equipmentMapper = equipmentMapper;
     }
 
-    public Iterable<Equipment> getAllEquipment() {
+    public Collection<Equipment> getAllEquipment() {
         return equipmentRepository.findAll();
     }
 
@@ -44,28 +45,23 @@ public class EquipmentService {
     }
 
     public Equipment createEquipment(Equipment equipment) {
-        equipment.setId(-1);
+        equipment.setId(null);
         equipment.setQrCodeUuid(UUID.randomUUID());
         return equipmentRepository.save(equipment);
     }
 
-    public Equipment updateEquipment(String json, long id) {
+    public Equipment updateEquipment(EquipmentDto equipmentUpdateDto, Long id) {
         Equipment oldEquipment = getEquipmentById(id);
-        Equipment finalEquipment;
-        try {
-            finalEquipment = new ObjectMapper().readerForUpdating(oldEquipment).readValue(json);
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed json.");
-        }
-        finalEquipment.setId(id);
-        return equipmentRepository.save(finalEquipment);
+        equipmentMapper.updateEquipmentFromDto(equipmentUpdateDto, oldEquipment);
+        return oldEquipment;
     }
 
     public Resource generateQrCode(Equipment equipment) throws Exception {
         String name = equipment.getName() == null ? "BRAK NAZWY" : equipment.getName();
         String id = String.valueOf(equipment.getId());
 
-        BitMatrix matrix = new QRCodeWriter().encode(equipment.getQrCodeUuid().toString(), BarcodeFormat.QR_CODE, 200, 200);
+        BitMatrix matrix = new QRCodeWriter().encode(equipment.getQrCodeUuid().toString(), BarcodeFormat.QR_CODE, 200,
+                200);
         var qrCode = MatrixToImageWriter.toBufferedImage(matrix);
 
         int qrCodeWidth = qrCode.getWidth();
@@ -96,6 +92,7 @@ public class EquipmentService {
     }
 
     public Equipment getEquipmentByQrCodeUUID(UUID uuid) {
-        return equipmentRepository.findEquipmentByqrCodeUuid(uuid).orElseThrow(() -> new NotFoundException("equipment (by qr code)"));
+        return equipmentRepository.findEquipmentByqrCodeUuid(uuid)
+                .orElseThrow(() -> new NotFoundException("equipment (by qr code)"));
     }
 }

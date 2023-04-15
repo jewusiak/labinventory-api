@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
@@ -23,7 +24,6 @@ public class AttachmentService {
     private final EquipmentService equipmentService;
     private final EventService eventService;
 
-
     public AttachmentService(AttachmentRepository attachmentRepository, FileStorageService fileStorageService, EquipmentService equipmentService, EventService eventService) {
         this.attachmentRepository = attachmentRepository;
         this.fileStorageService = fileStorageService;
@@ -31,7 +31,7 @@ public class AttachmentService {
         this.eventService = eventService;
     }
 
-    public Iterable<Attachment> getAllAttachments() {
+    public Collection<Attachment> getAllAttachments() {
         return attachmentRepository.findAll();
     }
 
@@ -57,7 +57,6 @@ public class AttachmentService {
         Attachment attachment = new Attachment();
         attachment.setViewableAttachmentType(ViewableAttachmentType.classifyFile(extension));
 
-
         if (ViewableAttachmentType.isImage(attachment.getViewableAttachmentType())) {
             //resize
             try {
@@ -67,7 +66,8 @@ public class AttachmentService {
                 int newWidth = (int) (bufferedImage.getWidth() * scale), newHeight = (int) (bufferedImage.getHeight() * scale);
 
                 var baos = new ByteArrayOutputStream();
-                Thumbnails.of(file.getInputStream()).size(newWidth, newHeight).outputQuality(0.7f).outputFormat(extension).toOutputStream(baos);
+                Thumbnails.of(file.getInputStream()).size(newWidth, newHeight).outputQuality(0.7f)
+                        .outputFormat(extension).toOutputStream(baos);
                 var bytes = baos.toByteArray();
                 baos.close();
 
@@ -121,9 +121,7 @@ public class AttachmentService {
             }
         }
 
-
         UUID uuid = fileStorageService.saveFile(file);
-
 
         attachment.setLabel(label);
         attachment.setOriginalFileName(originalFileName);
@@ -135,13 +133,13 @@ public class AttachmentService {
         return fileStorageService.getFile(attachmentId.toString());
     }
 
-    public Attachment assignEquipment(UUID attachmentId, long equipmentId) {
+    public Attachment assignEquipment(UUID attachmentId, Long equipmentId) {
         Attachment attachment = getAttachmentById(attachmentId);
         attachment.setEquipment(equipmentService.getEquipmentById(equipmentId));
         return attachmentRepository.save(attachment);
     }
 
-    public Attachment assignEvent(UUID attachmentId, long eventId) {
+    public Attachment assignEvent(UUID attachmentId, Long eventId) {
         Attachment attachment = getAttachmentById(attachmentId);
         attachment.setEvent(eventService.getEventById(eventId));
         return attachmentRepository.save(attachment);

@@ -2,17 +2,17 @@ package pl.jewusiak.inwentarzeeapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Attachment {
-
-    private static final String baseUrl = "http://127.0.0.1:8080";
 
     @Id
     private UUID id;
@@ -21,9 +21,6 @@ public class Attachment {
 
     private String originalFileName;
 
-    @Transient
-    private String downloadUrl;
-
     @Enumerated(EnumType.ORDINAL)
     private ViewableAttachmentType viewableAttachmentType;
 
@@ -31,7 +28,6 @@ public class Attachment {
     @JoinColumn(name = "equipment_id")
     @JsonIgnore
     private Equipment equipment;
-
 
     @ManyToOne
     @JoinColumn(name = "event_id")
@@ -48,7 +44,4 @@ public class Attachment {
         this.event = event;
     }
 
-    public String getDownloadUrl() {
-        return baseUrl + "/attachment/download/" + getId();
-    }
 }

@@ -1,0 +1,5 @@
+FROM openjdk:17
+LABEL authors="Grzegorz Jewusiak"
+COPY target/inwentarz-ee-api-0.0.1-SNAPSHOT.jar inwentarz-ee-api-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","/inwentarz-ee-api-0.0.1-SNAPSHOT.jar"]
