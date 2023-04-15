@@ -1,11 +1,11 @@
 package pl.jewusiak.inwentarzeeapi.exceptions;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
-public class InvalidCredentialsException extends HttpStatusCodeException {
+public class InvalidCredentialsException extends ResponseStatusException {
 
     public InvalidCredentialsException() {
-        super(HttpStatus.UNAUTHORIZED);
+        super(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }
 }

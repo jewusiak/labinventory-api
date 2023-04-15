@@ -2,6 +2,7 @@ package pl.jewusiak.inwentarzeeapi.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,10 +42,12 @@ public class AuthenticationService {
         if (request.getJwtexpirytime() == null) request.setJwtexpirytime(1);
         if (request.getJwtexpirytime() < 1 || request.getJwtexpirytime() > 30)
             throw new JWTExpiryTimeNotInRangeException();
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException();
+        }
         var user = userService.findUserByEmail(request.getEmail()).orElseThrow(InvalidCredentialsException::new);
 
         var jwtToken = jwtService.generateToken(user, Duration.ofDays(request.getJwtexpirytime()));
