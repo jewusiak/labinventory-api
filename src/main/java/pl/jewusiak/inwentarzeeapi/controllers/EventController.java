@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.jewusiak.inwentarzeeapi.models.dtos.EventDto;
 import pl.jewusiak.inwentarzeeapi.models.mappers.EventMapper;
 import pl.jewusiak.inwentarzeeapi.services.EventService;
+import pl.jewusiak.inwentarzeeapi.services.UserService;
 
 import java.util.Collection;
 
@@ -14,10 +15,12 @@ public class EventController {
 
     private final EventService eventService;
     private final EventMapper eventMapper;
+    private final UserService userService;
 
-    public EventController(EventService eventService, EventMapper eventMapper) {
+    public EventController(EventService eventService, EventMapper eventMapper, UserService userService) {
         this.eventService = eventService;
         this.eventMapper = eventMapper;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -37,8 +40,8 @@ public class EventController {
     }
 
     @PostMapping("")
-    public ResponseEntity<EventDto> createEvent(@RequestBody EventDto event) {
-        return ResponseEntity.status(201).body(eventMapper.mapToDto(eventService.createEvent(eventMapper.mapToEntity(event))));
+    public ResponseEntity<EventDto> createEvent(@RequestBody EventDto event, @RequestHeader("Authorization") String bearerToken) {
+        return ResponseEntity.status(201).body(eventMapper.mapToDto(eventService.createEvent(eventMapper.mapToEntity(event), userService.getUserByToken(bearerToken))));
     }
 
     @PostMapping("{event_id}/assign_equipment/{equipment_id}")

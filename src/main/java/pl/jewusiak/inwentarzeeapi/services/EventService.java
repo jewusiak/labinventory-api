@@ -3,8 +3,11 @@ package pl.jewusiak.inwentarzeeapi.services;
 import org.springframework.stereotype.Service;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.Event;
+import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.repositories.EventRepository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 
 @Service
@@ -30,8 +33,10 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    public Event createEvent(Event event) {
+    public Event createEvent(Event event, User createdBy) {
         event.setId(null);
+        event.setDateCreated(LocalDateTime.now(ZoneId.of("Europe/Warsaw")));
+        event.setCreatedBy(createdBy);
         return eventRepository.save(event);
     }
 
