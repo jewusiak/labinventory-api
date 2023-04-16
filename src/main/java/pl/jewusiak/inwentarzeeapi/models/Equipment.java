@@ -23,6 +23,7 @@ public class Equipment {
     private UUID qrCodeUuid;
     private String name;
     private String description;
+    private String location;
     private LocalDateTime next_calibration;
 
     @OneToMany(mappedBy = "equipment", cascade = {CascadeType.REMOVE})

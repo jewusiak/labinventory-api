@@ -13,6 +13,7 @@ import java.util.Collection;
 public class EquipmentDto {
     private Long id;
     private String name;
+    private String location;
     private String description;
     private LocalDateTime next_calibration;
     private Collection<AttachmentDto> attachments;
