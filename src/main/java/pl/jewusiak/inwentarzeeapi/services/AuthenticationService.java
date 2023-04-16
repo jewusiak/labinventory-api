@@ -12,6 +12,7 @@ import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationRequest;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationResponse;
 import pl.jewusiak.inwentarzeeapi.models.auth.RegisterRequest;
+import pl.jewusiak.inwentarzeeapi.models.mappers.UserMapper;
 import pl.jewusiak.inwentarzeeapi.security.JwtService;
 
 import java.time.Duration;
@@ -24,6 +25,7 @@ public class AuthenticationService {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (request.getJwtexpirytime() == null) request.setJwtexpirytime(1);
@@ -33,9 +35,9 @@ public class AuthenticationService {
         var user = User.builder().displayName(request.getDisplayName()).email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword())).isAccountEnabled(false)
                 .role(User.UserRole.USER).build();
-        userService.createUser(user);
+        User createdUser = userService.createUser(user);
         var jwtToken = jwtService.generateToken(user, Duration.ofDays(request.getJwtexpirytime()));
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(userMapper.mapToDto(createdUser)).build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -51,6 +53,6 @@ public class AuthenticationService {
         var user = userService.findUserByEmail(request.getEmail()).orElseThrow(InvalidCredentialsException::new);
 
         var jwtToken = jwtService.generateToken(user, Duration.ofDays(request.getJwtexpirytime()));
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(userMapper.mapToDto(user)).build();
     }
 }
