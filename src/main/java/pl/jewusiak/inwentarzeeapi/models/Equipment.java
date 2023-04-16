@@ -30,6 +30,7 @@ public class Equipment {
     private Collection<Attachment> attachments;
 
     @OneToMany(mappedBy = "equipment", cascade = {CascadeType.REMOVE})
+    @OrderBy("dateCreated desc")
     private Collection<Event> events;
 
 }
