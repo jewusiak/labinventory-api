@@ -1,6 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.models.dtos.UserDto;
@@ -33,7 +34,8 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -34,8 +34,8 @@ public class EquipmentController {
     }
 
     @PostMapping(value = "")
-    public EquipmentDto createEquipment(@RequestBody EquipmentDto equipment) {
-        return equipmentMapper.mapToDto(equipmentService.createEquipment(equipmentMapper.mapToEntity(equipment)));
+    public ResponseEntity<EquipmentDto> createEquipment(@RequestBody EquipmentDto equipment) {
+        return ResponseEntity.status(201).body(equipmentMapper.mapToDto(equipmentService.createEquipment(equipmentMapper.mapToEntity(equipment))));
     }
 
     @PutMapping("/{id}")
@@ -44,8 +44,9 @@ public class EquipmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEquipment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEquipment(@PathVariable Long id) {
         equipmentService.deleteEquipmentById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/genqrcode/{id}")

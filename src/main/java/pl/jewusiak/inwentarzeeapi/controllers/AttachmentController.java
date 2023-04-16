@@ -32,8 +32,8 @@ public class AttachmentController {
     }
 
     @PostMapping("")
-    public AttachmentDto createAttachment(@RequestParam("file") MultipartFile file, @RequestParam(value = "label", required = false, defaultValue = "") String label) {
-        return attachmentMapper.mapToDto(attachmentService.createAttachment(file, label));
+    public ResponseEntity<AttachmentDto> createAttachment(@RequestParam("file") MultipartFile file, @RequestParam(value = "label", required = false, defaultValue = "") String label) {
+        return ResponseEntity.status(201).body(attachmentMapper.mapToDto(attachmentService.createAttachment(file, label)));
     }
 
     @GetMapping("/getbyid/{id}")
@@ -58,8 +58,9 @@ public class AttachmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAttachmentById(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteAttachmentById(@PathVariable UUID id) {
         attachmentService.deleteAttachmentById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{attachment_id}/assign_equipment/{equipment_id}")

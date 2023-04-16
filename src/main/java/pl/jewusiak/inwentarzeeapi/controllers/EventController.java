@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jewusiak.inwentarzeeapi.models.dtos.EventDto;
 import pl.jewusiak.inwentarzeeapi.models.mappers.EventMapper;
@@ -30,13 +31,14 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEventById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("")
-    public EventDto createEvent(@RequestBody EventDto event) {
-        return eventMapper.mapToDto(eventService.createEvent(eventMapper.mapToEntity(event)));
+    public ResponseEntity<EventDto> createEvent(@RequestBody EventDto event) {
+        return ResponseEntity.status(201).body(eventMapper.mapToDto(eventService.createEvent(eventMapper.mapToEntity(event))));
     }
 
     @PostMapping("{event_id}/assign_equipment/{equipment_id}")
