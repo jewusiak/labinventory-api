@@ -53,7 +53,7 @@ public class EquipmentService {
     public Equipment updateEquipment(EquipmentDto equipmentUpdateDto, Long id) {
         Equipment oldEquipment = getEquipmentById(id);
         equipmentMapper.updateEquipmentFromDto(equipmentUpdateDto, oldEquipment);
-        return oldEquipment;
+        return equipmentRepository.save(oldEquipment);
     }
 
     public Resource generateQrCode(Equipment equipment) throws Exception {

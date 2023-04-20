@@ -30,7 +30,7 @@ public class EventService {
     }
 
     public void deleteEventById(long id) {
-        eventRepository.deleteById(id);
+        eventRepository.delete(getEventById(id));
     }
 
     public Event createEvent(Event event, User createdBy) {
