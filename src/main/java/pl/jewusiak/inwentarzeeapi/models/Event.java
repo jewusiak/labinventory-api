@@ -2,6 +2,7 @@ package pl.jewusiak.inwentarzeeapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,9 +24,10 @@ public class Event {
     private User createdBy;
     private String comment;
     @Enumerated(EnumType.ORDINAL)
+    @NotNull
     private EventType eventType;
     @ManyToOne
-    @JoinColumn(name = "equipment_id", nullable = true)
+    @JoinColumn(name = "equipment_id")
     @JsonIgnore
     private Equipment equipment;
 

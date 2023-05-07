@@ -15,7 +15,7 @@ public class EquipmentDto {
     private String name;
     private String location;
     private String description;
-    private LocalDateTime next_calibration;
+    private LocalDateTime nextCalibration;
     private Collection<AttachmentDto> attachments;
     private Collection<EventDto> events;
 }

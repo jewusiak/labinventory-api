@@ -1,4 +1,4 @@
-package pl.jewusiak.inwentarzeeapi.security;
+package pl.jewusiak.inwentarzeeapi.configurations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.jewusiak.inwentarzeeapi.jwt.JwtAuthFilter;
 import pl.jewusiak.inwentarzeeapi.models.User;
 
 @Configuration
@@ -23,7 +24,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/auth/**", "/error", "/attachment/download/*", "/attachment/getbyid/*",
-                        "/equipment/getall", "/equipment/getbyqrcode/*", "/equipment/getbyid/*")
+                        "/equipment/getall", "/equipment/getbyqrcode/*", "/equipment/getbyid/*", "/equipment/search")
                 .permitAll()
                 .requestMatchers("/users/admin/**").hasAnyAuthority(User.UserRole.ADMIN.name())
                 .anyRequest().authenticated()

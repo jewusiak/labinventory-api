@@ -4,6 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -12,24 +13,29 @@ import pl.jewusiak.inwentarzeeapi.models.Equipment;
 import pl.jewusiak.inwentarzeeapi.models.dtos.EquipmentDto;
 import pl.jewusiak.inwentarzeeapi.models.mappers.EquipmentMapper;
 import pl.jewusiak.inwentarzeeapi.repositories.EquipmentRepository;
+import pl.jewusiak.inwentarzeeapi.repositories.EquipmentSearchRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
+    private final EquipmentSearchRepository equipmentSearchRepository;
 
     private final EquipmentMapper equipmentMapper;
 
-    public EquipmentService(EquipmentRepository equipmentRepository, EquipmentMapper equipmentMapper) {
+    public EquipmentService(EquipmentRepository equipmentRepository, EquipmentMapper equipmentMapper, EquipmentSearchRepository equipmentSearchRepository) {
         this.equipmentRepository = equipmentRepository;
         this.equipmentMapper = equipmentMapper;
+        this.equipmentSearchRepository = equipmentSearchRepository;
     }
 
     public Collection<Equipment> getAllEquipment() {
@@ -95,4 +101,9 @@ public class EquipmentService {
         return equipmentRepository.findEquipmentByqrCodeUuid(uuid)
                 .orElseThrow(() -> new NotFoundException("equipment (by qr code)"));
     }
+
+    public List<Equipment> doSearch(Long id, String location, String name, boolean searchInDescription) {
+        return equipmentSearchRepository.doSearch(id, location, name, searchInDescription);
+    }
+
 }

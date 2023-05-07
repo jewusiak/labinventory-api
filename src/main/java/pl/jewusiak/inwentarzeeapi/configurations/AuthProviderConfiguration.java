@@ -1,4 +1,4 @@
-package pl.jewusiak.inwentarzeeapi.security;
+package pl.jewusiak.inwentarzeeapi.configurations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ import pl.jewusiak.inwentarzeeapi.services.UserService;
 
 @RequiredArgsConstructor
 @Configuration
-public class AuthConfiguration {
+public class AuthProviderConfiguration {
 
     private final UserService userService;
 

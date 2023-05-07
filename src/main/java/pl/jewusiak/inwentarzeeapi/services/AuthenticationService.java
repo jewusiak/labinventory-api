@@ -8,12 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.exceptions.JWTExpiryTimeNotInRangeException;
+import pl.jewusiak.inwentarzeeapi.jwt.JwtService;
 import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationRequest;
 import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationResponse;
 import pl.jewusiak.inwentarzeeapi.models.auth.RegisterRequest;
 import pl.jewusiak.inwentarzeeapi.models.mappers.UserMapper;
-import pl.jewusiak.inwentarzeeapi.security.JwtService;
 
 import java.time.Duration;
 

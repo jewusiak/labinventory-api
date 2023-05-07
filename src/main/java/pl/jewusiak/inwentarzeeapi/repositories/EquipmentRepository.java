@@ -14,4 +14,5 @@ public interface EquipmentRepository extends CrudRepository<Equipment, Long> {
 
     @Override
     List<Equipment> findAll();
+
 }

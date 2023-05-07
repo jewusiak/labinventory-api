@@ -2,8 +2,10 @@ package pl.jewusiak.inwentarzeeapi.controllers;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.models.dtos.EquipmentDto;
 import pl.jewusiak.inwentarzeeapi.models.mappers.EquipmentMapper;
 import pl.jewusiak.inwentarzeeapi.services.EquipmentService;
@@ -61,4 +63,16 @@ public class EquipmentController {
         return equipmentMapper.mapToDto(equipmentService.getEquipmentByQrCodeUUID(uuid));
     }
 
+    @GetMapping("/search")
+    public Collection<EquipmentDto> doSearch(@RequestParam(required = false) String id, @RequestParam(required = false) String location, @RequestParam(required = false) String name, @RequestParam(required = false) String searchInDescription) {
+        boolean _searchInDescription = "true".equals(searchInDescription) || "1".equals(searchInDescription);
+        Long _id = null;
+        if (id != null)
+            try {
+                _id = Long.valueOf(id);
+            } catch (NumberFormatException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID has to be a number.");
+            }
+        return equipmentMapper.mapAllToDto(equipmentService.doSearch(_id, location, name, _searchInDescription));
+    }
 }

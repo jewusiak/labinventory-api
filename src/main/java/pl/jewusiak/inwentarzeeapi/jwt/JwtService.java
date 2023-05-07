@@ -1,4 +1,4 @@
-package pl.jewusiak.inwentarzeeapi.security;
+package pl.jewusiak.inwentarzeeapi.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -1,4 +1,4 @@
-package pl.jewusiak.inwentarzeeapi.security;
+package pl.jewusiak.inwentarzeeapi.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -6,9 +6,9 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.jewusiak.inwentarzeeapi.exceptions.DuplicateEmailExistsInDatabase;
 import pl.jewusiak.inwentarzeeapi.exceptions.InvalidCredentialsException;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
+import pl.jewusiak.inwentarzeeapi.jwt.JwtService;
 import pl.jewusiak.inwentarzeeapi.models.User;
 import pl.jewusiak.inwentarzeeapi.repositories.UserRepository;
-import pl.jewusiak.inwentarzeeapi.security.JwtService;
 
 import java.util.Optional;
 
