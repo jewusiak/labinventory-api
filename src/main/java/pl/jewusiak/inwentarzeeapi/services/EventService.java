@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jewusiak.inwentarzeeapi.exceptions.NotFoundException;
 import pl.jewusiak.inwentarzeeapi.models.Event;
@@ -11,15 +12,12 @@ import java.time.ZoneId;
 import java.util.Collection;
 
 @Service
+@RequiredArgsConstructor
 public class EventService {
 
     private final EventRepository eventRepository;
     private final EquipmentService equipmentService;
 
-    public EventService(EventRepository eventRepository, EquipmentService equipmentService) {
-        this.eventRepository = eventRepository;
-        this.equipmentService = equipmentService;
-    }
 
     public Collection<Event> getAllEvents() {
         return eventRepository.findAll();

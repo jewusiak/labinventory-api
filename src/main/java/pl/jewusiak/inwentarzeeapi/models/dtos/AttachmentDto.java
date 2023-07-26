@@ -1,14 +1,13 @@
 package pl.jewusiak.inwentarzeeapi.models.dtos;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
 import pl.jewusiak.inwentarzeeapi.models.ViewableAttachmentType;
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class AttachmentDto {
 
     private UUID id;

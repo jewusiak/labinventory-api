@@ -2,15 +2,14 @@ package pl.jewusiak.inwentarzeeapi.models.dtos;
 
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Builder
-@Getter
-@Setter
+@Data
 public class EventDto {
     private Long id;
     @Setter(AccessLevel.NONE)

@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,15 +14,12 @@ import pl.jewusiak.inwentarzeeapi.repositories.UserRepository;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
 
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);

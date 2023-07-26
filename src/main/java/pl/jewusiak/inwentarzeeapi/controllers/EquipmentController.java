@@ -1,5 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,17 +15,14 @@ import pl.jewusiak.inwentarzeeapi.services.EquipmentService;
 import java.util.Collection;
 import java.util.UUID;
 
+@Tag(name = "Equipment", description = "Manage equipment")
 @RestController
 @RequestMapping(value = "equipment")
+@RequiredArgsConstructor
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
     private final EquipmentMapper equipmentMapper;
-
-    public EquipmentController(EquipmentService equipmentService, EquipmentMapper equipmentMapper) {
-        this.equipmentService = equipmentService;
-        this.equipmentMapper = equipmentMapper;
-    }
 
     @GetMapping("/getall")
     public Collection<EquipmentDto> getAllEquipment() {

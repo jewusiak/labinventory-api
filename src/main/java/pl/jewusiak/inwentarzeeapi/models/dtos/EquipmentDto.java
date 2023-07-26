@@ -1,15 +1,13 @@
 package pl.jewusiak.inwentarzeeapi.models.dtos;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Builder
-@Getter
-@Setter
+@Data
 public class EquipmentDto {
     private Long id;
     private String name;

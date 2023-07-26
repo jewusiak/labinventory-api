@@ -2,6 +2,7 @@ package pl.jewusiak.inwentarzeeapi.services;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FileStorageService {
     @Getter
     private final String rootPath = "api-data/uploads";

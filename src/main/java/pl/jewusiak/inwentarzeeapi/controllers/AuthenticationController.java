@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import pl.jewusiak.inwentarzeeapi.models.auth.AuthenticationResponse;
 import pl.jewusiak.inwentarzeeapi.models.auth.RegisterRequest;
 import pl.jewusiak.inwentarzeeapi.services.AuthenticationService;
 
+@Tag(name = "Authentication", description = "Authenticate/create new user")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")

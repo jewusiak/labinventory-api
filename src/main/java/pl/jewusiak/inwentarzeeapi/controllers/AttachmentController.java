@@ -1,5 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,17 +16,15 @@ import pl.jewusiak.inwentarzeeapi.services.AttachmentService;
 import java.util.Collection;
 import java.util.UUID;
 
+@Tag(name = "Attachments", description = "Manage files (attachments)")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/attachment")
 public class AttachmentController {
 
     private final AttachmentService attachmentService;
     private final AttachmentMapper attachmentMapper;
 
-    public AttachmentController(AttachmentService attachmentService, AttachmentMapper attachmentMapper) {
-        this.attachmentService = attachmentService;
-        this.attachmentMapper = attachmentMapper;
-    }
 
     @GetMapping("")
     public Collection<AttachmentDto> getAllAttachments() {

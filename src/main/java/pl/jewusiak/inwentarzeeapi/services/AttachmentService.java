@@ -1,5 +1,6 @@
 package pl.jewusiak.inwentarzeeapi.services;
 
+import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AttachmentService {
 
     private final FileStorageService fileStorageService;
@@ -24,12 +26,6 @@ public class AttachmentService {
     private final EquipmentService equipmentService;
     private final EventService eventService;
 
-    public AttachmentService(AttachmentRepository attachmentRepository, FileStorageService fileStorageService, EquipmentService equipmentService, EventService eventService) {
-        this.attachmentRepository = attachmentRepository;
-        this.fileStorageService = fileStorageService;
-        this.equipmentService = equipmentService;
-        this.eventService = eventService;
-    }
 
     public Collection<Attachment> getAllAttachments() {
         return attachmentRepository.findAll();

@@ -4,6 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
@@ -32,11 +34,6 @@ public class EquipmentService {
 
     private final EquipmentMapper equipmentMapper;
 
-    public EquipmentService(EquipmentRepository equipmentRepository, EquipmentMapper equipmentMapper, EquipmentSearchRepository equipmentSearchRepository) {
-        this.equipmentRepository = equipmentRepository;
-        this.equipmentMapper = equipmentMapper;
-        this.equipmentSearchRepository = equipmentSearchRepository;
-    }
 
     public Collection<Equipment> getAllEquipment() {
         return equipmentRepository.findAll();

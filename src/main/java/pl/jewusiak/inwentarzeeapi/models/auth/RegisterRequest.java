@@ -1,12 +1,8 @@
 package pl.jewusiak.inwentarzeeapi.models.auth;
 
-import lombok.*;
+import lombok.Data;
 
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
+@Data
 public class RegisterRequest {
 
     private String displayName;

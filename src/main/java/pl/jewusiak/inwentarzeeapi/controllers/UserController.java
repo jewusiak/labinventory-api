@@ -1,5 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,17 +10,15 @@ import pl.jewusiak.inwentarzeeapi.models.dtos.UserDto;
 import pl.jewusiak.inwentarzeeapi.models.mappers.UserMapper;
 import pl.jewusiak.inwentarzeeapi.services.UserService;
 
+@Tag(name = "User management")
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
 
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
 
     @GetMapping("/myprofile")
     public UserDto getOwnProfile(@RequestHeader("Authorization") String bearerToken) {

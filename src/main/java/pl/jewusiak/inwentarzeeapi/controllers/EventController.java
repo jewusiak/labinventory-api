@@ -1,5 +1,7 @@
 package pl.jewusiak.inwentarzeeapi.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jewusiak.inwentarzeeapi.models.dtos.EventDto;
@@ -9,19 +11,16 @@ import pl.jewusiak.inwentarzeeapi.services.UserService;
 
 import java.util.Collection;
 
+@Tag(name = "Events", description = "Manage events regarding lab equipment")
 @RestController
 @RequestMapping("/events")
+@RequiredArgsConstructor
 public class EventController {
 
     private final EventService eventService;
     private final EventMapper eventMapper;
     private final UserService userService;
 
-    public EventController(EventService eventService, EventMapper eventMapper, UserService userService) {
-        this.eventService = eventService;
-        this.eventMapper = eventMapper;
-        this.userService = userService;
-    }
 
     @GetMapping("")
     public Collection<EventDto> getAllEvents() {
